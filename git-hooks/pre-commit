@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# tstack memory guard: one node per commit, and size limits.
+# Overrides: TSTACK_MULTI=1 (several nodes), TSTACK_SIZE=1 (size limits), TSTACK_JOURNAL_EDIT=1 (journal edits).
+set -euo pipefail
+nodes=$(git diff --cached --name-only | sed -n 's#^nodes/\([^/]*\)/.*#\1#p' | sort -u)
+count=$(printf '%s\n' "$nodes" | grep -c . || true)
+if [ "${TSTACK_MULTI:-}" != 1 ] && [ "$count" -gt 1 ]; then
+  echo "tstack: this commit touches $count nodes ($(echo $nodes)). Commit one node at a time:" >&2
+  echo "  git commit -m '<node>: ...' -- nodes/<node>/   (override: TSTACK_MULTI=1)" >&2
+  exit 1
+fi
+if [ "${TSTACK_SIZE:-}" != 1 ]; then
+  for f in $(git diff --cached --name-only --diff-filter=AM | grep -E '^nodes/[^/]+/(AGENT|journal)\.md$' || true); do
+    size=$(git cat-file -s ":$f")
+    limit=12288; case "$f" in */journal.md) limit=32768;; esac
+    if [ "$size" -gt "$limit" ]; then
+      echo "tstack: $f is $size bytes, over $limit. Move old text to the .archive.md file (override: TSTACK_SIZE=1)" >&2
+      exit 1
+    fi
+  done
+fi
+# journal.md is append-only: a removed line must reappear in journal.archive.md. The check lives in
+# lib/tstack/memory_tools.py (`swarm memory archive journals` makes compliant moves).
+if [ "${TSTACK_JOURNAL_EDIT:-}" != 1 ]; then
+  kit="$(cd "$(dirname "$0")/.." && pwd -P)"
+  PYTHONPATH="$kit/lib" python3 -m tstack.memory_tools guard || exit 1
+fi

@@ -1,0 +1,17 @@
+# herdr settings for tstack. install.sh appends the sections you lack; it never changes yours.
+
+[ui]
+# Group agents in the sidebar by workspace, so each manager's workers sit under it.
+agent_panel_sort = "spaces"
+
+[ui.toast]
+# Show pop-ups inside herdr: agents that finish or need you, and swarm tasks.
+delivery = "herdr"
+
+[ui.sidebar.agents]
+# $task is set on each worker's pane by `swarm start-worker` and on each manager's pane by the routine.
+rows = [["state_icon", "workspace"], ["tab", "state_text"], ["$task"]]
+
+[ui.sidebar.spaces]
+# $tasks is the task counts the routine sets on each manager's workspace (e.g. "1 waiting · 2 running").
+rows = [["state_icon", "workspace"], ["branch", "git_status"], ["$tasks"]]

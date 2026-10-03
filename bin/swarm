@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+"""swarm: thin launcher for the tstack package in ../lib (symlinks resolved). See docs/ARCHITECTURE.md."""
+
+import os
+import sys
+
+if sys.version_info < (3, 9):
+    sys.exit("swarm needs Python 3.9 or newer")
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "lib"))
+
+from tstack.cli import main  # noqa: E402
+
+if __name__ == "__main__":
+    sys.exit(main())

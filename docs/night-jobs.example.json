@@ -1,0 +1,21 @@
+{
+  "jobs": [
+    {
+      "title": "Fix the failing unit tests",
+      "prompt": "Run the unit tests, find why they fail, and fix the code (not the tests). Commit on a new branch.",
+      "cwd": "~/work/myrepo",
+      "verify": "python3 -m pytest -q",
+      "max_attempts": 4
+    },
+    {
+      "title": "Write the missing docstrings in src/",
+      "prompt": "Add a one-line docstring to every public function in src/ that lacks one. Do not change behaviour.",
+      "cwd": "~/work/myrepo",
+      "minutes": 45
+    },
+    {
+      "task": "2026-10-05-ingest",
+      "prompt": "Only the dry-run part tonight; leave the real upload for the morning."
+    }
+  ]
+}

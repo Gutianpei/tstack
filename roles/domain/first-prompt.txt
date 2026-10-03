@@ -1,0 +1,1 @@
+Resume memory node {{NODE}}. You are the swarm manager {{NAME}}. Read {{DATA_DIR}}/handoffs/{{NAME}}.md, then run `swarm list --owner {{NAME}}`.
