@@ -6,6 +6,8 @@ and herdr settings. The agents are Claude Code sessions by default, hosted in
 [herdr](https://herdr.dev), a terminal workspace manager for coding agents. It runs on macOS and on
 Linux servers. MIT licensed.
 
+![A tour of a tstack swarm: the task list, two managers' workers busy in parallel, and a manager's report](docs/images/tour.gif)
+
 Two layers do the main work, and the rest are optional:
 
 1. **Memory.** A private git repo of notes with one folder ("node") per project. Every agent
@@ -17,6 +19,24 @@ Two layers do the main work, and the rest are optional:
 
 On top of these: GPU and storage rules for shared servers, a Slack bridge, an always-on routine
 that keeps managers fresh, an overnight runner, and nightly backups.
+
+## What it looks like
+
+A demo swarm with three managers (`overall`, `web`, `data`) working on two small repos.
+
+**A question waiting on you.** The `tasks` tab in the `overall` workspace. The `web` manager could
+not decide how dark mode should work, so it asks, with its recommended answer. Everything else
+keeps running.
+
+![The task list: one question waiting on you with a recommended answer, two tasks running](docs/images/tasks-waiting.png)
+
+**Workers in parallel.** The `workers` tab of the `web` workspace: one fresh Claude Code session
+per task, each in its own git worktree. Finished workers report what they did and checked; the
+sidebar shows every manager and worker and what it is doing.
+
+![Four web workers: three finished with their reports, one still writing CSS](docs/images/web-workers.png)
+
+![The data manager's workers: a forecast, a --region flag and unit tests](docs/images/data-workers.png)
 
 ## A day with it
 
